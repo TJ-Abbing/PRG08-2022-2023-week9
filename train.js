@@ -29,4 +29,18 @@ function loadData(){
         nn.normalizeData(console.log(`Normalized data.`));
 
         nn.train({ epochs: 10 }, () => console.log("Finished training."));
+
+        async function makePrediction(){
+
+                for (let patient of testData) {
+                        const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
+                        const pred = nn.predict(testPatient);
+                        console.log(`Predicted price for phone with the following details; 
+                        \n cores: ${patient.age}
+                        \n cpu: ${patient.sex}
+                        \n memory: ${patient.bmi}
+                        \n storage: ${patient.children}
+                        \n price: ${pred[0].charges}`);
+                }
+        }makePrediction();
     }
