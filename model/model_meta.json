@@ -1,0 +1,1 @@
+{"inputUnits":[4],"outputUnits":1,"inputs":{"age":{"dtype":"number","min":18,"max":64},"sex":{"dtype":"number","min":0,"max":1},"bmi":{"dtype":"number","min":15.96,"max":50.38},"children":{"dtype":"number","min":0,"max":5}},"outputs":{"charges":{"dtype":"number","min":1121.87,"max":63770.43}},"isNormalized":true}
