@@ -48,7 +48,7 @@ function checkData(data) {
     console.log(`Normalized data.`);
 
     // Trains.
-    nn.train({ epochs: 10 }, () => console.log("Finished training."));
+    nn.train({ epochs: 100 }, () => console.log("Finished training."));
 
     // Makes predictions.
     async function makePrediction() {
@@ -58,16 +58,19 @@ function checkData(data) {
         for (let patient of testData) {
             const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
             const pred = await nn.predict(testPatient);
-    
-            console.log(`Predicted charges for patient with the following details: 
+        
+            console.log(`Predicted charges for patient with the following details:
             \n age: ${patient.age}
             \n sex: ${patient.sex}
             \n bmi: ${patient.bmi}
             \n children: ${patient.children}
             \n charges: ${patient.charges}`);
-
+        
+            console.log(`Predicted charges: ${pred[0].charges}`);
+        
             predictions.push({ x: Number(pred[0].charges), y: patient.bmi });
         }
+        
     
         console.log(`Completed makePrediction().`);
     
