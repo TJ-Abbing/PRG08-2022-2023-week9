@@ -3,6 +3,7 @@ Dit README-bestand beschrijft het concept en de implementatie van een AI-toepass
 
 ## Pages
 Prototype - https://tj-abbing.github.io/PRG08-2022-2023-week9/train.html
+Uitwerking - https://tj-abbing.github.io/PRG08-2022-2023-week9/predict.html
 
 ## Concept
 
