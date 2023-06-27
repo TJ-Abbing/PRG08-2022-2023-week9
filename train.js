@@ -1,9 +1,12 @@
 console.log(`Loaded train.js.`);
 import { createChart, updateChart } from "./scatterplot.js";
 
+let nn; // Define nn at the top of your code
+
+document.getElementById("save").addEventListener("click", () => nn.save()); // Use an arrow function to call the save method on nn
+
 // Loads data.
 function loadData() {
-
     console.log(`Initialized loadData().`);
 
     Papa.parse("./data/insurance.csv", {
@@ -14,8 +17,9 @@ function loadData() {
     });
 
     console.log(`Completed loadData().`);
+}
 
-} loadData();
+loadData();
 
 function checkData(data) {
     console.log(`Initialized checkData().`);
@@ -33,7 +37,7 @@ function checkData(data) {
     console.log(`Prepared data.`);
 
     // Creates neural network.
-    let nn = ml5.neuralNetwork({ task: 'regression', debug: true });
+    nn = ml5.neuralNetwork({ task: 'regression', debug: true }); // Assign the neural network to the nn variable
     console.log(`Created neural network.`);
 
     // Adds data to neural network.
@@ -43,7 +47,7 @@ function checkData(data) {
             { charges: Number(patient.charges.replace(/[^0-9.-]+/g, "")) }
         );
         console.log(`Added patient to neural network as training data.`);
-    }    
+    }
 
     // Normalizes data.
     nn.normalizeData();
@@ -55,29 +59,28 @@ function checkData(data) {
     // Makes predictions.
     async function makePrediction() {
         console.log(`Initialized makePrediction().`);
-    
+
         let predictions = [];
         for (let patient of testData) {
             const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
             const pred = await nn.predict(testPatient);
-            
+
             console.log(`Added patient to neural network as test data.`);
-        
+
             console.log(`Predicted charges for patient with the following details:
             \n age: ${patient.age}
             \n sex: ${patient.sex}
             \n bmi: ${patient.bmi}
             \n children: ${patient.children}
             \n charges: ${patient.charges}`);
-        
+
             console.log(`Predicted charges: ${pred[0].charges}`);
-        
+
             predictions.push({ x: Number(pred[0].charges), y: patient.bmi });
         }
-        
-    
+
         console.log(`Completed makePrediction().`);
-    
+
         let chartdata;
         try {
             chartdata = data.map(patient => ({
@@ -86,17 +89,16 @@ function checkData(data) {
             }));
         } catch (error) {
             console.error(error);
-        }        
-    
+        }
+
         // Create chart using chartdata
         createChart(chartdata, "charges", "bmi");
-    
+
         // Update chart with predictions
         updateChart("Predictions", predictions);
     }
-    
+
     makePrediction();
-     
 
     console.log(`Completed checkData().`)
 }
