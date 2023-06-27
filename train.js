@@ -38,10 +38,10 @@ function checkData(data) {
     for (let patient of trainData) {
         nn.addData(
             { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children },
-            { charges: patient.charges }
+            { charges: Number(patient.charges.replace(/[^0-9.-]+/g, "")) }
         );
         console.log(`Added patient to neural network.`);
-    }
+    }    
 
     // Normalizes data.
     nn.normalizeData();
@@ -54,6 +54,7 @@ function checkData(data) {
     async function makePrediction() {
         console.log(`Initialized makePrediction().`);
     
+        let predictions = [];
         for (let patient of testData) {
             const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
             const pred = await nn.predict(testPatient);
@@ -64,12 +65,13 @@ function checkData(data) {
             \n bmi: ${patient.bmi}
             \n children: ${patient.children}
             \n charges: ${patient.charges}`);
+
+            predictions.push({ x: Number(pred[0].charges), y: patient.bmi });
         }
     
         console.log(`Completed makePrediction().`);
     
         let chartdata;
-        
         try {
             chartdata = data.map(patient => ({
                 x: Number(patient.charges.replace(/[^0-9.-]+/g, "")),
@@ -81,9 +83,13 @@ function checkData(data) {
     
         // Create chart using chartdata
         createChart(chartdata, "charges", "bmi");
+    
+        // Update chart with predictions
+        updateChart("Predictions", predictions);
     }
     
-    makePrediction();    
+    makePrediction();
+     
 
     console.log(`Completed checkData().`)
 }
