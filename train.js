@@ -61,24 +61,47 @@ function checkData(data) {
         console.log(`Initialized makePrediction().`);
 
         let predictions = [];
+        let correctPredictions = 0;
+        let incorrectPredictions = 0;
+        
         for (let patient of testData) {
             const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
             const pred = await nn.predict(testPatient);
-
+        
             console.log(`Added patient to neural network as test data.`);
-
+        
             console.log(`Predicted charges for patient with the following details:
             \n age: ${patient.age}
             \n sex: ${patient.sex}
             \n bmi: ${patient.bmi}
             \n children: ${patient.children}
             \n charges: ${patient.charges}`);
-
+        
             console.log(`Predicted charges: ${pred[0].charges}`);
-
+        
+            // Calculates the percentage difference between actual and predicted charges
+            const actualCharges = Number(patient.charges.replace(/[^0-9.-]+/g, ""));
+            const predictedCharges = pred[0].charges;
+            const percentageDifference = ((actualCharges - predictedCharges) / actualCharges) * 100;
+        
+            // Logs the percentage difference
+            console.log(`Percentage difference between actual and predicted charges: ${percentageDifference}%`);
+        
+            // Updates the counters for correct and incorrect predictions
+            if (Math.abs(percentageDifference) <= 100) {
+                correctPredictions++;
+            } else {
+                incorrectPredictions++;
+            }
+        
             predictions.push({ x: Number(pred[0].charges), y: patient.bmi });
         }
-
+        
+        // Logs the number of correct and incorrect predictions
+        console.log(`Number of correct predictions: ${correctPredictions}`);
+        console.log(`Number of incorrect predictions: ${incorrectPredictions}`);
+        
+        
         console.log(`Completed makePrediction().`);
 
         let chartdata;
