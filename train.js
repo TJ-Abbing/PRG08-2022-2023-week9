@@ -40,7 +40,7 @@ function checkData(data) {
             { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children },
             { charges: Number(patient.charges.replace(/[^0-9.-]+/g, "")) }
         );
-        console.log(`Added patient to neural network.`);
+        console.log(`Added patient to neural network as training data.`);
     }    
 
     // Normalizes data.
@@ -58,6 +58,8 @@ function checkData(data) {
         for (let patient of testData) {
             const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
             const pred = await nn.predict(testPatient);
+            
+            console.log(`Added patient to neural network as test data.`);
         
             console.log(`Predicted charges for patient with the following details:
             \n age: ${patient.age}
