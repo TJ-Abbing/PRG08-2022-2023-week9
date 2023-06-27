@@ -1,6 +1,9 @@
 # AI Toepassing - README
-
 Dit README-bestand beschrijft het concept en de implementatie van een AI-toepassing voor de eindopdracht voor CMTPRG02-8. De toepassing maakt gebruik van ML5 Neural Network Regression met eigen data om voorspellingen te doen over medische kosten van patiënten op basis van verschillende kenmerken.
+
+## Pages
+Prototype - https://tj-abbing.github.io/PRG08-2022-2023-week9/train.html
+
 ## Concept
 
 Het idee voor de applicatie is om een regressiemodel te bouwen dat medische kosten voorspelt op basis van verschillende kenmerken van een patiënt, zoals leeftijd, geslacht, BMI en aantal kinderen. Het doel is om een schatting te geven van de verwachte medische kosten voor een bepaalde patiënt op basis van de gegevens. Dit kan waardevol zijn voor patiënten, verzekeringsmaatschappijen en zorgverleners om inzicht te krijgen in mogelijke kosten.
