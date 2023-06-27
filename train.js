@@ -3,18 +3,23 @@ import { createChart, updateChart } from "./scatterplot.js";
 
 // Loads data.
 function loadData() {
+
     console.log(`Initialized loadData().`);
+
     Papa.parse("./data/insurance.csv", {
         download: true,
         header: true,
         dynamicTyping: true,
         complete: results => checkData(results.data),
     });
-}
-loadData();
+
+    console.log(`Completed loadData().`);
+
+} loadData();
 
 function checkData(data) {
     console.log(`Initialized checkData().`);
+    console.log(data)
     console.table(data);
 
     // Sorts the array randomly.
@@ -48,28 +53,37 @@ function checkData(data) {
     // Makes predictions.
     async function makePrediction() {
         console.log(`Initialized makePrediction().`);
-
+    
         for (let patient of testData) {
             const testPatient = { age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children };
-            const preds = await nn.predict(testPatient);
-            const pred = preds[0]; // Access the first prediction in the array
-
+            const pred = await nn.predict(testPatient);
+    
             console.log(`Predicted charges for patient with the following details: 
             \n age: ${patient.age}
             \n sex: ${patient.sex}
             \n bmi: ${patient.bmi}
             \n children: ${patient.children}
-            \n charges: ${pred.charges}`);
+            \n charges: ${patient.charges}`);
         }
+    
+        console.log(`Completed makePrediction().`);
+    
+        let chartdata;
+        
+        try {
+            chartdata = data.map(patient => ({
+                x: Number(patient.charges.replace(/[^0-9.-]+/g, "")),
+                y: patient.bmi,
+            }));
+        } catch (error) {
+            console.error(error);
+        }        
+    
+        // Create chart using chartdata
+        createChart(chartdata, "charges", "bmi");
     }
+    
+    makePrediction();    
 
-    makePrediction();
-
-    const chartdata = data.map(patient => ({
-        x: patient.bmi,
-        y: patient.charges,
-    }));
-
-    // Create chart using chartdata
-    createChart(chartdata, "bmi", "charges");
+    console.log(`Completed checkData().`)
 }
