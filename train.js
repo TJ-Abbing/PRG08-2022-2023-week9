@@ -1,6 +1,7 @@
 console.log(`Loaded train.js.`)
 import { createChart, updateChart } from "./scatterplot.js"
 
+// Loads data.
 function loadData(){
 
     console.log(`Initialized loadData().`)
@@ -17,24 +18,30 @@ function checkData(data){
     console.log(`Initialized checkData().`)
     console.table(data)
 
-    // data voorbereiden
+    // Sorts the array randomly.
     data.sort(() => (Math.random() - 0.5))
+    // Create a new array called trainData that contains 80% of the original data array.
     let trainData = data.slice(0, Math.floor(data.length * 0.8))
+    // Create another new array called testData that contains the remaining 20% of the original data array except for the last element which is excluded from testData.
     let testData = data.slice(Math.floor(data.length * 0.8) + 1)
+    console.log(`Prepared data.`)
 
-    // neural network aanmaken
+    // Creates neural network.
     let nn = ml5.neuralNetwork({ task: 'regression', debug: true })
+    console.log(`Created neural network.`)
 
-    // data toevoegen aan neural network
+    // Adds data to neural network.
     for(let patient of trainData){
         nn.addData({ age: patient.age, sex: patient.sex, bmi: patient.bmi, children: patient.children }, {charges: patient.charges })
+        console.log(`Added patient to neural network.`)
     }
 
-    // normalize data
+    // Normalizes data.
     nn.normalizeData(console.log(`Normalized data.`));
-
+    // Trains.
     nn.train({ epochs: 10 }, () => console.log("Finished training."));
 
+    // Makes predictions.
     async function makePrediction(){
         
         console.log(`Initialized makePrediction().`)
