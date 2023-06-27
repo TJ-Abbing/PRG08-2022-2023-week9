@@ -19,14 +19,16 @@ function loadData() {
 
 function checkData(data) {
     console.log(`Initialized checkData().`);
-    console.log(data)
+    console.log(`Logging data...`);
+    console.log(data);
     console.table(data);
+    console.log(`Data logged.`);
 
     // Sorts the array randomly.
     data.sort(() => Math.random() - 0.5);
-    // Create a new array called trainData that contains 80% of the original data array.
+    // Creates a new array called trainData that contains 80% of the original data array.
     let trainData = data.slice(0, Math.floor(data.length * 0.8));
-    // Create another new array called testData that contains the remaining 20% of the original data array except for the last element which is excluded from testData.
+    // Creates another new array called testData that contains the remaining 20% of the original data array except for the last element which is excluded from testData.
     let testData = data.slice(Math.floor(data.length * 0.8) + 1);
     console.log(`Prepared data.`);
 
